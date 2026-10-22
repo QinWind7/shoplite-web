@@ -1,0 +1,750 @@
+/* ==========================================================================
+   ShopLite · 样式表
+   命名规范：BEM（block__element--modifier）+ 工具类
+   布局方案：全站使用 Flexbox
+
+   分层说明：
+   1) 基础层：重置、CSS 变量
+   2) 公共层：可复用的工具类（.container / .card / .overlay / .img-cover /
+      .btn-primary / .btn-icon / .badge / .text-primary）
+   3) 区块层：各 BEM 区块只保留自身特有的布局与尺寸，共性样式全部省略
+   ========================================================================== */
+
+/* ---------- 基础重置 ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #ff5000;
+  --color-primary-dark: #e04500;
+  --color-text: #222;
+  --color-text-light: #888;
+  --color-border: #eee;
+  --color-bg: #f5f6f8;
+  --color-bg-soft: #fafafa;
+  --color-white: #fff;
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, .06);
+  --shadow-card-hover: 0 12px 26px rgba(0, 0, 0, .16);
+  --radius-sm: 8px;
+  --radius: 10px;
+  --radius-pill: 999px;
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   公共层 · 工具类（在 HTML 中直接附加 class 即可复用）
+   ========================================================================== */
+
+/* 页面容器：限宽 + 居中 + 左右留白
+   使用处：header__inner / category__list / carousel / main / footer__inner / footer__copyright */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 修饰符：去掉左右留白，用于需要贴边展示的整块模块 */
+.container--flush {
+  padding: 0;
+}
+
+/* 卡片外观：圆角 + 白底 + 阴影
+   使用处：carousel / product-card / modal__box */
+.card {
+  border-radius: var(--radius);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-card);
+}
+
+/* 遮罩层：绝对定位铺满父级
+   使用处：carousel__mask / modal__mask */
+.overlay {
+  position: absolute;
+  inset: 0;
+}
+
+/* 图片等比裁剪铺满
+   使用处：carousel__image / product-card__image / modal__image */
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 主按钮：橙色实心 + 悬停加深
+   使用处：header__search-btn / carousel__btn / modal__add */
+.btn-primary {
+  border: none;
+  cursor: pointer;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  transition: background-color .2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* 图标按钮：圆形、内容居中
+   使用处：carousel__arrow / carousel__dot / modal__close */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* 胶囊小标签
+   使用处：header__cart-count / product-card__tag / modal__badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* 主题色文字
+   使用处：Logo 与页脚标题的强调字、商品卡片价格、弹窗价格 */
+.text-primary {
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Block: header —— 顶部导航栏
+   ========================================================================== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-white);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
+}
+
+.header__inner {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.header__logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: .5px;
+  flex-shrink: 0;
+}
+
+/* --- 搜索框 --- */
+.header__search {
+  flex: 1;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  background-color: var(--color-white);
+}
+
+.header__search-input {
+  flex: 1;
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--color-text);
+  background-color: transparent;
+}
+
+/* 按钮外观来自 .btn-primary，此处只定义尺寸 */
+.header__search-btn {
+  height: 38px;
+  padding: 0 22px;
+  font-size: 14px;
+}
+
+/* --- 购物车 --- */
+.header__cart {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-white);
+  font-size: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color .2s ease, color .2s ease;
+}
+
+.header__cart:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* 标签外观来自 .badge，此处只定义尺寸与配色 */
+.header__cart-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  line-height: 1;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* ==========================================================================
+   Block: category —— 分类导航
+   ========================================================================== */
+.category {
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.category__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+}
+
+.category__item {
+  padding: 12px 18px;
+  font-size: 15px;
+  color: var(--color-text);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .2s ease, border-color .2s ease;
+}
+
+.category__item:hover {
+  color: var(--color-primary);
+}
+
+/* 选中态（BEM 修饰符） */
+.category__item--active {
+  color: var(--color-primary);
+  font-weight: 600;
+  border-bottom-color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Block: carousel —— 轮播图
+   ========================================================================== */
+/* 容器 / 卡片外观来自 .container + .container--flush + .card */
+.carousel {
+  position: relative;
+  margin: 20px auto;
+  overflow: hidden;        /* 裁掉轨道里超出容器的那一张，保证只看到当前幻灯片 */
+}
+
+.carousel__viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* 图片列表：横向 flex 容器，宽度等于视口宽度，靠 transform 整体平移 */
+.carousel__track {
+  display: flex;
+  width: 100%;
+  transition: transform .5s ease;
+}
+
+/* 每张幻灯片严格等于容器宽度的 100%，并保持 16:9 比例 */
+.carousel__slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;         /* 防止内容撑宽幻灯片，导致位移距离与 100% 对不上 */
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: stretch;
+}
+
+/* 文案区：自带浅色底，文字始终落在自己的面板内，不会与图片内容叠在一起 */
+.carousel__content {
+  flex: 0 0 46%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 48px;
+  background: linear-gradient(135deg, #fff3ec 0%, #f6f7f9 100%);
+}
+
+/* 图片区：占满剩余空间，图片用 object-fit: cover 铺满且不变形 */
+.carousel__media {
+  flex: 1;
+  overflow: hidden;
+}
+
+.carousel__title {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.carousel__subtitle {
+  font-size: 16px;
+  color: var(--color-text-light);
+}
+
+/* 按钮外观来自 .btn-primary，此处只定义尺寸 */
+.carousel__btn {
+  margin-top: 10px;
+  padding: 9px 26px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+}
+
+/* --- 左右箭头 --- */
+/* 圆形居中外观来自 .btn-icon */
+.carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  font-size: 26px;
+  color: var(--color-text);
+  background-color: rgba(255, 255, 255, .82);
+  opacity: 0;
+  transition: opacity .25s ease, background-color .2s ease;
+}
+
+.carousel:hover .carousel__arrow {
+  opacity: 1;
+}
+
+.carousel__arrow:hover {
+  background-color: var(--color-white);
+}
+
+.carousel__arrow--prev {
+  left: 16px;
+}
+
+.carousel__arrow--next {
+  right: 16px;
+}
+
+/* --- 指示点 --- */
+.carousel__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 圆形外观来自 .btn-icon */
+.carousel__dot {
+  width: 9px;
+  height: 9px;
+  background-color: rgba(255, 255, 255, .55);
+  transition: width .25s ease, background-color .25s ease;
+}
+
+.carousel__dot--active {
+  width: 22px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Block: main —— 商品区标题
+   ========================================================================== */
+.main {
+  margin-bottom: 40px;
+}
+
+.main__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.main__title {
+  font-size: 22px;
+}
+
+.main__count {
+  font-size: 13px;
+  color: var(--color-text-light);
+}
+
+.main__empty {
+  display: none;
+  padding: 60px 0;
+  text-align: center;
+  color: var(--color-text-light);
+}
+
+.main__empty--visible {
+  display: block;
+}
+
+/* ==========================================================================
+   Block: product-grid / product-card —— 商品卡片网格
+   ========================================================================== */
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  /* 必须左对齐：若用 space-between，筛选后一行只剩 1~2 件时会被推到两端 */
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+/* 卡片外观来自 .card，此处只定义尺寸与交互 */
+.product-card {
+  /* 每行 4 个：4 张卡片 + 3 个 gap(20px) 正好铺满一行
+     4w + 3×20px = 100%  =>  w = 25% - 15px */
+  width: calc(25% - 15px);
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* hover 上浮效果 */
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.product-card__media {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-soft);
+}
+
+/* 图片铺满来自 .img-cover，此处只定义放大过渡 */
+.product-card__image {
+  transition: transform .35s ease;
+}
+
+.product-card:hover .product-card__image {
+  transform: scale(1.06);
+}
+
+.product-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  flex: 1;
+}
+
+.product-card__name {
+  font-size: 15px;
+  font-weight: 600;
+  /* 名称最多两行，超出显示省略号 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card__footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.product-card__price {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* 标签外观来自 .badge，此处只定义配色 */
+.product-card__tag {
+  color: var(--color-text-light);
+  background-color: var(--color-bg);
+}
+
+/* ==========================================================================
+   Block: footer —— 页脚
+   ========================================================================== */
+.footer {
+  background-color: #23303f;
+  color: #c7d0db;
+}
+
+.footer__inner {
+  padding: 36px 20px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.footer__col {
+  flex: 1 1 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer__col--brand {
+  flex: 1 1 260px;
+}
+
+.footer__title {
+  font-size: 16px;
+  color: var(--color-white);
+}
+
+.footer__desc {
+  font-size: 13px;
+  color: #8f9bab;
+}
+
+.footer__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer__item {
+  font-size: 13px;
+}
+
+/* 仅给带交互标记的页脚条目加手型光标；选择器基于已有 data-action 属性，
+   不新增类名，也不影响“联系我们”栏的静态文本 */
+.footer__item[data-action] {
+  cursor: pointer;
+}
+
+.footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+.footer__copyright {
+  padding: 16px 20px;
+  font-size: 12px;
+  text-align: center;
+  color: #8f9bab;
+}
+
+/* ==========================================================================
+   Block: modal —— 商品详情弹窗
+   ========================================================================== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;              /* 默认隐藏，通过 JS 切换 */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 打开态（BEM 修饰符） */
+.modal--open {
+  display: flex;
+}
+
+/* 铺满父级来自 .overlay，此处只定义背景与动画 */
+.modal__mask {
+  background-color: rgba(0, 0, 0, .55);
+  animation: modal-fade .2s ease;
+}
+
+/* 卡片外观来自 .card，此处只定义尺寸与动画 */
+.modal__box {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  padding: 24px;
+  border-radius: 14px;
+  animation: modal-pop .25s ease;
+}
+
+/* 圆形居中外观来自 .btn-icon */
+.modal__close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  font-size: 22px;
+  color: var(--color-text-light);
+  background-color: transparent;
+  transition: color .2s ease, background-color .2s ease;
+}
+
+.modal__close:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+.modal__media {
+  flex: 0 0 300px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background-color: var(--color-bg-soft);
+}
+
+/* 图片铺满来自 .img-cover，此处只定义最小高度 */
+.modal__image {
+  min-height: 260px;
+}
+
+.modal__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 标签外观来自 .badge，此处只定义尺寸与配色 */
+.modal__badge {
+  align-self: flex-start;
+  padding: 3px 12px;
+  color: var(--color-primary);
+  background-color: #fff0e8;
+}
+
+.modal__name {
+  font-size: 22px;
+}
+
+.modal__price {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.modal__label {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+.modal__desc {
+  font-size: 14px;
+  color: #555;
+}
+
+/* 按钮外观来自 .btn-primary，此处只定义尺寸与位置 */
+.modal__add {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 11px 32px;
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+}
+
+/* 弹窗动画 */
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: translateY(18px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ==========================================================================
+   响应式（仍保持 Flexbox 布局）
+   ========================================================================== */
+@media (max-width: 768px) {
+  .header__inner {
+    flex-wrap: wrap;
+  }
+
+  .header__search {
+    order: 3;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .header__cart-text {
+    display: none;
+  }
+
+  .carousel__content {
+    flex: 0 0 58%;
+    padding: 20px 24px;
+  }
+
+  .carousel__title {
+    font-size: 20px;
+  }
+
+  .carousel__subtitle {
+    font-size: 13px;
+  }
+
+  .carousel__btn {
+    padding: 7px 18px;
+    font-size: 13px;
+  }
+
+  .modal__box {
+    flex-direction: column;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .modal__media {
+    flex: 0 0 auto;
+    height: 220px;
+  }
+
+  .modal__image {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-card {
+    /* 每行 2 个：2w + 1×20px = 100%  =>  w = 50% - 10px */
+    width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 420px) {
+  .product-card {
+    /* 每行 1 个：独占一行 */
+    width: 100%;
+  }
+}
